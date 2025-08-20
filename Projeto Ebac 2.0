@@ -1,0 +1,175 @@
+#include <stdio.h>//Faz a comunicação com o usuário.
+#include <stlib.h>//Alocação de memória.
+#include <locale.h>//Alocação de caracteres tipo texto.
+#include <string.h>//Criação de strings.
+
+
+int cadastrar() { //Função responsavel por fazer o cadastro do usuário
+    int opcao;
+
+ do{
+    //Inicio das variaveis da função cadastrar
+	char arquivo[200];
+	char cpf[11];
+	char nome[20];
+	char sobrenome[50];
+	char cargo[30];
+    struct data_nascimento { //Usei o struct pra agrupar as variaveis dd,mm,yyyy
+
+		int dia[2];
+		int mes[2];
+        int ano[4];
+	}
+
+
+    printf("Digite seu cpf:\n");//Irá coletar os dados.
+	scanf("%s", cpf);//Ira ler os dados digitados .
+
+	strncpy(arquivo, cpf, sizeof(arquivo));//Copia os valores da strings.
+	arquivo[sizeof(arquivo) - 1] = 0;
+
+	FILE *file; //Cria o arquivo.
+	file =fopen(arquivo, "w");//Criar o arquivo.
+	if (!file) {// Validação caso de erro
+	    perror("Erro ao criar arquivo:"); return 1;// "perror" irá mostrar exetamente onde está o erro.
+	    }
+	fprintf(file, "cpf:%s\n", cpf);//Imprimi dentro do arquivo
+	fclose(file);//Fecha o arquivo
+
+	//Troquei o scanf pelo fgets para fazer a leitura completa do nome e cargo.
+	
+	printf("Digite o seu nome:\n");//Coleta os dados.
+	fgets(nome, sizeof(nome), stdin);//Irá ler as informações do printf.
+	nome[strcspn (nome,"\n")] = '\0';//Remove o "\n".
+
+	file =fopen(arquivo, "a");//Abre o arquivo e "a" ira adicionar mais dados
+	fprintf(file, "nome:%s", nome);//Imprimi dentro do arquivo
+	fclose(file);//Fechar o arquivo
+
+	printf("Digite o seu sobrenome:\n");//
+	fgets(sobrenone, sizeof(sobrenome), stdin);
+	sobrenome[strcspn(sobrenome, "\n")] = '\0';
+
+	file =fopen(arquivo, "a");
+	fprintf(file, "Sobrenome: %s", sobrenome);
+	fclose(file);
+
+	printf("Digite o seu cargo:\n");
+	fgets(cargo, sizeof(cargo), stdin);
+    cargo[strcspn(cargo, "\n")] = '\0';
+
+	
+	printf("Digite sua data de nascimento (DD/MM/YYYY):");
+	scanf("%d/%d/%d", data_nascimento);
+
+	file =fopen(arquivo, "a");
+	fprintf(file, "Data de nascimento: %02d/%02d/%04d", data_nascimento);
+	fclose(file);
+
+    printf("Gostaria de adicionar mais algum cadastro? (sim - não)");
+    scanf("%d", opcao);
+   } while (strcmp(opcao == 'sim') = 0 || strcmp(opcao == 'Sim') = 0);
+
+ return 0;
+}
+ 
+ int consultar(){// Função responsavel por consultar o cadastro.
+
+     char conteudo[200];
+     char cpf[11];
+     
+     printf("Digite o seu cpf:\n"):
+     scanf("%s", cpf);
+     
+     FILE *file = fopen(cpf, "r");
+      if (file == false){
+       }else{
+          printf("Essas são as informações do usuário:\n");
+          while(fgets(conteudo, sizeof(conteudo), file) != NULL);
+          printf("%s",conteudo);
+        }
+    fclose(file);
+    printf("\n");
+ }
+ 
+ int excluir(){
+
+     char cpf[11];
+     
+     printf("Digite o seu cpf:\n");
+     scanf("%s", cpf);
+     
+     remove(cpf);
+     
+     FILE *file;
+     file =fopen(cpf , "r");
+     
+     if(file == NULL){
+         printf("Usuário não encontrado!");
+         system("pause");
+     }else{
+         printf("Cadastro excluido com sucesso!");
+         system("pause");
+     }
+
+ }
+ int sair(){
+
+    int opcao;
+
+    printf("Deseja sair do progama (sim = 1 | não = 0):\n");
+    scanf("%d", &opcao);
+
+    if (opcao == 1){
+    exit (1);
+     else{
+      printf("Retornando ao menu principal!\n");
+    }
+  }
+ return 0;
+}
+
+int main{
+     
+     setlocale(LC_ALL, "portuguese");
+     
+     int laco = 1;
+     int opcao = 0;
+     
+     while(laco == 1){
+         
+         printf("Seja bem vindo ao cartório da ebac!\n");
+         printf("Escolha uma das opções abaixo.\n");//Inicio do menu
+         printf("\t1 - Cadastrar.\n");
+         printf("\t2 - Consultar cadastro.\n");
+         printf("\t3 - Excluir cadastro.\n");
+         printf("\t4 - Sair.\n");
+         scanf("%d", opcao);
+         
+         switch(opcao){
+             
+             case 1:
+             cadastrar();
+             break
+             
+             case 2:
+             consultar();
+             break;
+             
+             case 3:
+             excluir();
+             break;
+
+             case 4;
+             sair();
+             break;
+
+             default:
+             printf("Opção inválida, Por favor tente novamente.")
+             
+
+            }
+     }
+ 
+     return 0;
+ }
